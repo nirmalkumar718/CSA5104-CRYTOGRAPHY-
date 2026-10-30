@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int main()
+{
+    char m[5][5]={
+        {'M','F','H','I','K'},
+        {'U','N','O','P','Q'},
+        {'Z','V','W','X','Y'},
+        {'E','L','A','R','G'},
+        {'D','S','T','B','C'}
+    };
+
+    char s[100];
+    int i,j,r1,c1,r2,c2;
+
+    printf("Enter plaintext: ");
+    scanf("%99s",s);
+
+    printf("Ciphertext: ");
+
+    for(i=0;s[i];i+=2)
+    {
+        char a=toupper(s[i]);
+        char b=s[i+1]?toupper(s[i+1]):'X';
+
+        for(j=0;j<25;j++)
+        {
+            if(m[j/5][j%5]==a)
+            {
+                r1=j/5;c1=j%5;
+            }
+
+            if(m[j/5][j%5]==b)
+            {
+                r2=j/5;c2=j%5;
+            }
+        }
+
+        if(r1==r2)
+        {
+            c1=(c1+1)%5;
+            c2=(c2+1)%5;
+        }
+        else if(c1==c2)
+        {
+            r1=(r1+1)%5;
+            r2=(r2+1)%5;
+        }
+        else
+        {
+            j=c1;c1=c2;c2=j;
+        }
+
+        printf("%c%c",m[r1][c1],m[r2][c2]);
+    }
+
+    return 0;
+}
