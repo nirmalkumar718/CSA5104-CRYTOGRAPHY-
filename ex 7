@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int main()
+{
+    char text[200];
+    char key[]="QWERTYUIOPASDFGHJKLZXCVBNM";
+    int i,j;
+
+    printf("Enter ciphertext: ");
+    fgets(text,sizeof(text),stdin);
+
+    for(i=0;text[i];i++)
+    {
+        if(isalpha(text[i]))
+        {
+            for(j=0;j<26;j++)
+            {
+                if(toupper(text[i])==key[j])
+                {
+                    text[i]=islower(text[i])?
+                    'a'+j:'A'+j;
+                    break;
+                }
+            }
+        }
+    }
+
+    printf("Decrypted text: %s",text);
+
+    return 0;
+}
