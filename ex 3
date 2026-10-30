@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main()
+{
+    char key[] = "MONARCHY";
+    char msg[100], matrix[5][5];
+    int used[26] = {0};
+    int i, j, k = 0, r1, c1, r2, c2;
+    char a, b;
+
+    used['J'-'A'] = 1;
+
+    for(i = 0; key[i]; i++)
+    {
+        a = toupper(key[i]);
+        if(a == 'J') a = 'I';
+
+        if(!used[a-'A'])
+        {
+            matrix[k/5][k%5] = a;
+            used[a-'A'] = 1;
+            k++;
+        }
+    }
+
+    for(a = 'A'; a <= 'Z'; a++)
+    {
+        if(!used[a-'A'])
+        {
+            matrix[k/5][k%5] = a;
+            k++;
+        }
+    }
+
+    printf("Enter plaintext: ");
+    scanf("%99s", msg);
+
+    for(i = 0; msg[i]; i++)
+    {
+        msg[i] = toupper(msg[i]);
+        if(msg[i] == 'J') msg[i] = 'I';
+    }
+
+    printf("Ciphertext: ");
+
+    for(i = 0; msg[i]; i += 2)
+    {
+        a = msg[i];
+        b = msg[i+1] ? msg[i+1] : 'X';
+
+        if(a == b)
+        {
+            b = 'X';
+            i--;
+        }
+
+        for(j = 0; j < 25; j++)
+        {
+            if(matrix[j/5][j%5] == a)
+            {
+                r1 = j/5;
+                c1 = j%5;
+            }
+
+            if(matrix[j/5][j%5] == b)
+            {
+                r2 = j/5;
+                c2 = j%5;
+            }
+        }
+
+        if(r1 == r2)
+        {
+            c1 = (c1+1)%5;
+            c2 = (c2+1)%5;
+        }
+        else if(c1 == c2)
+        {
+            r1 = (r1+1)%5;
+            r2 = (r2+1)%5;
+        }
+        else
+        {
+            j = c1;
+            c1 = c2;
+            c2 = j;
+        }
+
+        printf("%c%c", matrix[r1][c1],
+                         matrix[r2][c2]);
+    }
+
+    return 0;
+}
