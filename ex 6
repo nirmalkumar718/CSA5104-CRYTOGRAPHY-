@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int gcd(int a, int b)
+{
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+int main()
+{
+    char s[200];
+    int a,b,i,p,inv;
+
+    printf("Enter ciphertext: ");
+    scanf("%199s",s);
+
+    for(a=1;a<26;a++)
+    {
+        if(gcd(a,26)!=1) continue;
+
+        for(inv=1;inv<26;inv++)
+            if((a*inv)%26==1) break;
+
+        for(b=0;b<26;b++)
+        {
+            printf("\na=%d b=%d: ",a,b);
+
+            for(i=0;s[i];i++)
+            {
+                p=toupper(s[i])-'A';
+                printf("%c",(inv*(p-b+26))%26+'A');
+            }
+        }
+    }
+    return 0;
+}
